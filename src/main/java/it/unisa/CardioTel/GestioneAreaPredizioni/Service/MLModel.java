@@ -76,7 +76,8 @@ public class MLModel {
 
             //inserisce la valutazione del modello da stampare
             pr.setModello( "\n"+ "\n"+("Mean Absolute Error :" +"\n"+ eval.meanAbsoluteError())+"\n" +"\n"+
-                    ("Root Mean Absolute Error" + "\n" + eval.rootMeanSquaredError())+"\n");
+                   ("Root Mean Absolute Error" + "\n" + eval.rootMeanSquaredError())+"\n"  +"\n"+
+                    ("Correlation Coefficient" + "\n" + eval.correlationCoefficient()+"\n"));
             return pr;
         } catch (Exception e) {
             throw new RuntimeException(e);
