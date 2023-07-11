@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LinearRegression;
+import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
 
 import javax.inject.Inject;
@@ -78,10 +79,9 @@ public class TestAreaPredizioni {
                 .get("/AreaPredizioni/stream");
 
         List<Predizione> predizioni =this.p.getPredizioni();
-
-
         Matcher<Boolean> predictionAttended = is(checkPredictionCohesion(predizioni.get(1)));
         boolean f;
+
 
         if(checkPredictionCohesion(predizioni.get(1)))
             f=true;
@@ -124,13 +124,18 @@ public class TestAreaPredizioni {
         predizioneEffettiva = predizioneEffettiva/rilevazioni.size();
 
         //fa la predizione tramite modello e lo ottiene
-        double predizioniCalcolate = PredizioniAteroService.getPredizioneAtero(rilevazioni).getPercentualeRischio();
+
         ConverterUtils.DataSource source = new ConverterUtils.DataSource(ml.getArff("atero",rilevazioni));
         LinearRegression model = ml.getModel(source);
 
+        Instances instance=source.getDataSet();
+        instance.setClassIndex(instance.numAttributes() - 1);
+
+        double predizioniCalcolate =  MLModel.classifyInstance(instance,source).getPercentualeRischio();
+
         //ottengo il mean absolute error per verificare lo scarto entro il quale deve essere preciso
-        Evaluation eval= new Evaluation(PredizioniAteroService.getAsInstanceAtero(rilevazioni,"testing"));
-        eval.crossValidateModel(model, PredizioniAteroService.getAsInstanceAtero(rilevazioni,"testing"),10,new Random());
+        Evaluation eval= new Evaluation(instance);
+        eval.crossValidateModel(model, instance,10,new Random());
         double meanAbsoluteError = eval.meanAbsoluteError();
 
         System.out.println(predizioniCalcolate + "%\n" + predizioneEffettiva +"%\nMAE\t " + meanAbsoluteError);
@@ -152,13 +157,18 @@ public class TestAreaPredizioni {
         predizioneEffettiva = predizioneEffettiva/rilevazioni.size();
 
         //fa la predizione tramite modello e lo ottiene
-        double predizioniCalcolate = PredizioniInfartoService.getPredizioneInfarto(rilevazioni).getPercentualeRischio();
+
         ConverterUtils.DataSource source = new ConverterUtils.DataSource(ml.getArff("infarto",rilevazioni));
         LinearRegression model = ml.getModel(source);
 
+        Instances instance=source.getDataSet();
+        instance.setClassIndex(instance.numAttributes() - 1);
+
+        double predizioniCalcolate =  MLModel.classifyInstance(instance,source).getPercentualeRischio();
+
         //ottengo il mean absolute error per verificare lo scarto entro il quale deve essere preciso
-        Evaluation eval= new Evaluation(PredizioniInfartoService.getAsInstanceInfarto(rilevazioni,"testing"));
-        eval.crossValidateModel(model, PredizioniInfartoService.getAsInstanceInfarto(rilevazioni,"testing"),10,new Random());
+        Evaluation eval= new Evaluation(instance);
+        eval.crossValidateModel(model, instance,10,new Random());
         double meanAbsoluteError = eval.meanAbsoluteError();
 
         System.out.println(predizioniCalcolate + "%\n" + predizioneEffettiva +"%\nMAE\t " + meanAbsoluteError);
@@ -174,14 +184,16 @@ public class TestAreaPredizioni {
         boolean f;
         double percent = p.getPercentualeRischio();
 
-        if(p.getRischio().equals(Predizione.Rischio.sotto_controllo)) {
-            if(percent<= MLModel.percentageSicuro)
+        if(p.getRischio()!=null) {
+            if (p.getRischio().equals(Predizione.Rischio.sotto_controllo)) {
+                if (percent <= MLModel.percentageSicuro)
+                    return true;
+            } else if (p.getRischio().equals(Predizione.Rischio.attenzione)) {
+                if (percent > MLModel.percentageSicuro && percent < MLModel.percentageRischio)
+                    return true;
+            } else if (percent >= MLModel.percentageRischio) {
                 return true;
-        }else if(p.getRischio().equals(Predizione.Rischio.attenzione)) {
-            if(percent>MLModel.percentageSicuro && percent<MLModel.percentageRischio)
-                return true;
-        }else if(percent>=MLModel.percentageRischio){
-            return true;
+            }
         }
 
         return false;
