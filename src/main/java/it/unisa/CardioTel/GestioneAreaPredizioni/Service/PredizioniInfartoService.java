@@ -29,15 +29,14 @@ public class PredizioniInfartoService {
                 Predizione pr = new Predizione();
 
                 //creazione datasource per Infarto con i dati del db
-                DataSource source = new DataSource(MLModel.getArff("infarto", rilevazione));
+                //DataSource source = new DataSource(MLModel.getArff("infarto", rilevazione));
+                DataSource source = new DataSource("D:\\FIA_Project\\RilevazioniSetInfarto.arff");
 
                 //creazione Intance da classificare
                 Instances instance = getAsInstanceInfarto(rilevazione, "testing");
 
 
                 return MLModel.classifyInstance(instance,source);
-
-
 
             }catch (Exception e){
                 e.printStackTrace();

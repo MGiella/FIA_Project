@@ -44,11 +44,12 @@ public class MLModel {
         try {
             //ottenimento modello dal dataset
             LinearRegression model = getModel(source);
-            Instances dataset = source.getDataSet();
-            dataset.setClassIndex(dataset.attribute("predizione").index());
+            Instances Trainingdataset = source.getDataSet();
+            Trainingdataset.setClassIndex(Trainingdataset.attribute("predizione").index());
+            Evaluation eval= new Evaluation(Trainingdataset);
 
-            Evaluation eval= new Evaluation(dataset);
-            eval.crossValidateModel(model,dataset,10,new Random());
+            instances.setClassIndex(instances.attribute("predizione").index());
+            eval.crossValidateModel(model,Trainingdataset,10,new Random());
 
             Predizione pr = new Predizione();
 
@@ -76,15 +77,15 @@ public class MLModel {
 
             //inserisce la valutazione del modello da stampare
             pr.setModello( "\n"+ "\n"+("Mean Absolute Error :" +"\n"+ eval.meanAbsoluteError())+"\n" +"\n"+
-                   ("Root Mean Absolute Error" + "\n" + eval.rootMeanSquaredError())+"\n"  +"\n"+
-                    ("Correlation Coefficient" + "\n" + eval.correlationCoefficient()+"\n"));
+                   ("Root Mean Absolute Error" + "\n" + eval.rootMeanSquaredError())+"\n"  +"\n");
+               //  ("Correlation Coefficient" + "\n" + eval.correlationCoefficient()+"\n"));
             return pr;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    //genera l'arff file da cui ottenere il datasource in base alla malattia
+    //genera l'arff file da cui ottenere il datasource in base alla malattia per il training
     public static String getArff(String malattia, List<Device> rilevazione) {
         Instances dataset = null;
         String outputFilename = "";

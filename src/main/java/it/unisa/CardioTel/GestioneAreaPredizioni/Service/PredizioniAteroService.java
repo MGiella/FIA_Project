@@ -21,8 +21,10 @@ public class PredizioniAteroService {
         if(rilevazione.size()>=10){
 
             try{
-            DataSource source = new DataSource(MLModel.getArff("atero",rilevazione));
-            Instances instance = getAsInstanceAtero(rilevazione, "testing");
+                // DataSource source = new DataSource(MLModel.getArff("atero",rilevazione));
+                DataSource source = new DataSource("D:\\FIA_Project\\RilevazioniSetAtero.arff");
+                Instances instance = getAsInstanceAtero(rilevazione, "testing");
+
 
             return MLModel.classifyInstance(instance,source);
 
