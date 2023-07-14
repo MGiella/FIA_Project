@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LinearRegression;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
 
@@ -126,7 +127,7 @@ public class TestAreaPredizioni {
         //fa la predizione tramite modello e lo ottiene
 
         ConverterUtils.DataSource source = new ConverterUtils.DataSource(ml.getArff("atero",rilevazioni));
-        LinearRegression model = ml.getModel(source);
+        RandomForest model = ml.getModel(source);
 
         Instances instance=source.getDataSet();
         instance.setClassIndex(instance.numAttributes() - 1);
@@ -159,7 +160,7 @@ public class TestAreaPredizioni {
         //fa la predizione tramite modello e lo ottiene
 
         ConverterUtils.DataSource source = new ConverterUtils.DataSource(ml.getArff("infarto",rilevazioni));
-        LinearRegression model = ml.getModel(source);
+        RandomForest model = ml.getModel(source);
 
         Instances instance=source.getDataSet();
         instance.setClassIndex(instance.numAttributes() - 1);
