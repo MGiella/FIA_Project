@@ -5,6 +5,7 @@ import it.unisa.CardioTel.GestioneDevice.Service.Device;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import weka.classifiers.Evaluation;
+import weka.classifiers.trees.RandomForest;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
@@ -24,14 +25,14 @@ public class MLModel {
     public static final double percentageSicuro = 40;
 
     //tramite il datasource fornito crea un modello da sfruttare per la predizione
-    public static LinearRegression getModel(DataSource source) throws Exception {
+    public static RandomForest getModel(DataSource source) throws Exception {
 
         //get dataset from datasource
         Instances dataset = source.getDataSet();
         dataset.setClassIndex(dataset.attribute("predizione").index());
 
         //Build model
-        LinearRegression model = new LinearRegression();
+        RandomForest model = new RandomForest();
         model.buildClassifier(dataset);
         return model;
 
@@ -43,7 +44,7 @@ public class MLModel {
 
         try {
             //ottenimento modello dal dataset
-            LinearRegression model = getModel(source);
+            RandomForest model = getModel(source);
             Instances Trainingdataset = source.getDataSet();
             Trainingdataset.setClassIndex(Trainingdataset.attribute("predizione").index());
             Evaluation eval= new Evaluation(Trainingdataset);
@@ -77,8 +78,8 @@ public class MLModel {
 
             //inserisce la valutazione del modello da stampare
             pr.setModello( "\n"+ "\n"+("Mean Absolute Error :" +"\n"+ eval.meanAbsoluteError())+"\n" +"\n"+
-                   ("Root Mean Absolute Error" + "\n" + eval.rootMeanSquaredError())+"\n"  +"\n");
-               //  ("Correlation Coefficient" + "\n" + eval.correlationCoefficient()+"\n"));
+                   ("Root Mean Absolute Error" + "\n" + eval.rootMeanSquaredError())+"\n"  +"\n" +
+                 ("Correlation Coefficient" + "\n" + eval.correlationCoefficient()+"\n"));
             return pr;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -116,7 +117,6 @@ public class MLModel {
     //associa una percentuale di rischio in base al valore corrispondente
     public static double calcolaPrediction(Device rilevazione, String malattia) {
         List<Double> percent = new ArrayList<>();
-
 
         percent.add(normalise(rilevazione.getPressione(), Device.minPresMas, Device.maxPresMas));
         percent.add(normalise(rilevazione.getPressione_due(), Device.minPresMin, Device.maxPresMin));
