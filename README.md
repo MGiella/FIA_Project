@@ -1,24 +1,22 @@
 CardioTel (ML module)
+#
 
 ----------------------------- Team -----------------------------
 
-Alessio Romaniello
-Carmine Pascale
-Mattia Giuseppe Giella
-Sabrina Pannullo
-
+Alessio Romaniello, Carmine Pascale, Mattia Giuseppe Giella, Sabrina Pannullo
+#
 
 
 ----------------------------- Obiettivi -----------------------------
 
 Costruire un modello di ML in grado si predire la probabilità (in percentuale) di aterosclerosi e infarto.
-
+#
 
 
 ----------------------------- Repository -----------------------------
 
 Composta da codice, dataset di base (RilevazioniAtero.arff e RilevazioniInfarto.arff), documentazione varia.
-
+#
 
 
 ----------------------------- Installazioni -----------------------------
@@ -45,7 +43,7 @@ Il progetto utilizza le seguenti tecnologie:
 - Soucetree
     - https://www.sourcetreeapp.com/
 
-
+#
 
 ----------------------------- Setup Progetto -----------------------------
 
@@ -63,8 +61,7 @@ Una volta installati Docker e MongoDB:
             - mvnw quarkus:dev
 
 Inserire in un browser: http://localhost:8080/MIO_ENDPOINT per visualizzare l'output
-
-
+#
 
 ----------------------------- Plus -----------------------------
 
