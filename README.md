@@ -1,8 +1,31 @@
-Sezione Learning/Training e Installazioni -----------------------------
+CardioTel (ML module)
+
+----------------------------- Team -----------------------------
+
+Alessio Romaniello
+Carmine Pascale
+Mattia Giuseppe Giella
+Sabrina Pannullo
+
+
+
+----------------------------- Obiettivi -----------------------------
+
+Costruire un modello di ML in grado si predire la probabilità (in percentuale) di aterosclerosi e infarto.
+
+
+
+----------------------------- Repository -----------------------------
+
+Composta da codice, dataset di base (RilevazioniAtero.arff e RilevazioniInfarto.arff), documentazione varia.
+
+
+
+----------------------------- Installazioni -----------------------------
 
 Il progetto utilizza le seguenti tecnologie:
 - Framework Quarkus (Red Hat)
-    - Guida Ufficiale Quarkus :
+    - Guida Ufficiale Quarkus:
         - https://quarkus.io/
     - Tutorial from scratch di come settare un progetto Quarkus:
         - https://quarkus.io/guides/getting-started
@@ -21,8 +44,11 @@ Il progetto utilizza le seguenti tecnologie:
 
 - Soucetree
     - https://www.sourcetreeapp.com/
-----------------------------------------------------------------------
-Sezione Setup Progetto -----------------------------------------------
+
+
+
+----------------------------- Setup Progetto -----------------------------
+
 Una volta installati Docker e MongoDB:
 - eseguire:
     - git clone https://github.com/abacco/GPS_Project.git (Clonazione Progetto -  richiesto solo una volta)
@@ -37,8 +63,11 @@ Una volta installati Docker e MongoDB:
             - mvnw quarkus:dev
 
 Inserire in un browser: http://localhost:8080/MIO_ENDPOINT per visualizzare l'output
------------------------------------------------------------------------
-Sezione plus:
+
+
+
+----------------------------- Plus -----------------------------
+
 - Capiterà a volte che con lo shutdown di mongodb, ci sia ancora il relativo processo
 in ascolto sulla porta scelta in fase si up & run, per killare un processo in ascolto
 su di una determinata porta:
